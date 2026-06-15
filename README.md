@@ -6,6 +6,22 @@
 
 Repository: [github.com/Sarthak6o1/cortex-arena](https://github.com/Sarthak6o1/cortex-arena)
 
+**New here?** Start with the step-by-step local guide: [`docs/GETTING_STARTED.md`](docs/GETTING_STARTED.md)
+
+### Run locally in 5 commands
+
+```bash
+git clone https://github.com/Sarthak6o1/cortex-arena.git
+cd cortex-arena
+python -m venv .venv && .venv\Scripts\activate    # Windows
+# source .venv/bin/activate                       # macOS/Linux
+pip install -e . && pip install -e .[dev]
+python -m backend.app.cli --pull-recommended
+python -m streamlit run frontend/streamlit_app.py
+```
+
+Then open [http://localhost:8501](http://localhost:8501). Full setup, troubleshooting, and automated checks are in [`docs/GETTING_STARTED.md`](docs/GETTING_STARTED.md).
+
 Cortex Arena helps teams evaluate large language models on their own hardware without sending prompts, scores, or replay history to a hosted AI service by default. Local Ollama models compete in structured episodes, receive critique, revise their answers, get scored by judge agents, and build long-term selection memory through goal-based reasoning, utility-based decisions, Q-learning, and UCB exploration.
 
 Designed for **company-local evaluation**, **internal AI labs**, and **privacy-sensitive environments** where data residency, auditability, and controlled model selection matter.
@@ -26,8 +42,10 @@ Designed for **company-local evaluation**, **internal AI labs**, and **privacy-s
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Quickstart](#quickstart)
+- [Run on Your Machine (Full Guide)](#run-on-your-machine-full-guide)
 - [Verify Everything Works](#verify-everything-works)
 - [Live Verification Results](#live-verification-results)
+- [Model Benchmark Results](#model-benchmark-results)
 - [Deployment Topology](#deployment-topology)
 - [Query Differentiation Flow](#query-differentiation-flow)
 - [API Endpoints](#api-endpoints)
@@ -552,6 +570,29 @@ Open: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
 
+## Run on Your Machine (Full Guide)
+
+For a complete walkthrough with prerequisites, Windows/macOS/Linux commands, troubleshooting, and automated verification scripts, see:
+
+**[`docs/GETTING_STARTED.md`](docs/GETTING_STARTED.md)**
+
+That guide covers:
+
+| Step | Command / action |
+|------|------------------|
+| Install Ollama | [ollama.com](https://ollama.com) |
+| Clone repo | `git clone https://github.com/Sarthak6o1/cortex-arena.git` |
+| Install deps | `pip install -e . && pip install -e .[dev]` |
+| Pull models | `python -m backend.app.cli --pull-recommended` |
+| Run UI | `python -m streamlit run frontend/streamlit_app.py` |
+| Unit tests | `pytest -v` |
+| Output check | `python scripts/verify_live_behavior.py` |
+| Winner benchmark | `python scripts/run_model_benchmark.py` |
+
+The benchmark runs five challenge types (product, coding, reasoning, security, creative) and writes scored results to [`docs/benchmark_results.json`](docs/benchmark_results.json). Expect **15–30 minutes** on a typical laptop.
+
+---
+
 ## Verify Everything Works
 
 ### Level 1: Infrastructure
@@ -600,59 +641,93 @@ If all of that appears, the app is working end-to-end.
 
 ### Level 4: Live query and model differentiation
 
-Run the live verification script (requires Ollama with `qwen2.5:3b` and `gemma2:2b`):
-
 ```bash
 python scripts/verify_live_behavior.py
 ```
 
-This script checks two properties:
+Checks that different prompts and different models produce different raw answers. Output: [`docs/verification_results.json`](docs/verification_results.json).
 
-1. **Different queries, same model** — `qwen2.5:3b` on a coding vs security challenge must produce different SHA-256 digests.
-2. **Same query, different models** — the same coding challenge with `qwen2.5:3b` vs `gemma2:2b` must produce different digests.
+### Level 5: Multi-query winner benchmark
 
-Results are written to [`docs/verification_results.json`](docs/verification_results.json).
+```bash
+python scripts/run_model_benchmark.py
+```
+
+Runs five judged episodes (one per challenge type) with `qwen2.5:3b`, `gemma2:2b`, and `phi3:mini`. Proves that **winners change by query type**, not one model winning everything. Output: [`docs/benchmark_results.json`](docs/benchmark_results.json).
+
+Requires Ollama with all four recommended models (`llama3.2:3b` is used as judge).
 
 ---
 
 ## Live Verification Results
 
-Last verified: **2026-06-15T12:44:00Z** (local Ollama v0.30.6)
+Last verified: **2026-06-15T12:56:15Z** (local Ollama)
 
 ### Unit tests (`pytest -v`)
 
 ```text
-tests/test_agentic_engines.py::test_q_learning_update_uses_bellman_rule PASSED
-tests/test_agentic_engines.py::test_utility_engine_prefers_high_q_model PASSED
-tests/test_agentic_engines.py::test_goal_engine_marks_strong_episode_as_met PASSED
-tests/test_agentic_engines.py::test_episode_store_persists_replay_leaderboard_and_q_table PASSED
-
-4 passed in 0.64s
+4 passed in 0.25s
 ```
 
-### Live behavior proof
+### Live behavior proof (distinct outputs)
 
 | Test | Model(s) | Challenge types | Digest A | Digest B | Distinct? |
 |------|----------|-----------------|----------|----------|-----------|
-| Different queries, same model | `qwen2.5:3b` | coding vs security | `76922071869e8e8c` | `7621c107d7da789f` | **Yes** |
-| Same query, different models | `qwen2.5:3b` vs `gemma2:2b` | coding (same prompt) | `c0e576b8e1dcef26` | `ae12a0e2207f90ec` | **Yes** |
+| Different queries, same model | `qwen2.5:3b` | coding vs security | `14295c103b0ca89d` | `1badab9ee5142a5c` | **Yes** |
+| Same query, different models | `qwen2.5:3b` vs `gemma2:2b` | coding (same prompt) | `0d3b0d29024c0da5` | `383126a857993c77` | **Yes** |
 
 **Overall: PASSED** — outputs are genuinely different per query and per model.
 
-Sample answer previews from the live run:
-
-| Case | Preview |
-|------|---------|
-| `qwen2.5:3b` + coding | "The likely bug in this scenario is that if the function does not explicitly return something (such as an empty list or `None`), then by default it returns `None`..." |
-| `qwen2.5:3b` + security | "### Review of Simple Email/Password Login Design #### Identified Security Risks: 1. **Weak Password Hashing**..." |
-| `gemma2:2b` + coding | "```python def find_items(data): \"\"\"Finds items in data; returns None if no items are found.\"\"\" if not data: return None..." |
-
-Re-run verification anytime after model or prompt changes:
+Re-run anytime:
 
 ```bash
 pytest -v
 python scripts/verify_live_behavior.py
+python scripts/run_model_benchmark.py
 ```
+
+---
+
+## Model Benchmark Results
+
+Last benchmark: **2026-06-15T13:16:07Z**
+
+Judge: `llama3.2:3b` · Contestants: `qwen2.5:3b`, `gemma2:2b`, `phi3:mini` · Episodes: **5**
+
+### Winners vary by challenge type
+
+| Challenge | Type | Winner | Top score | Runner-up |
+|-----------|------|--------|-----------|-----------|
+| Secure Student Notes | product | **qwen2.5:3b** | 38 | gemma2:2b (38) |
+| Bug Fix Debate | coding | **phi3:mini** | 44 | qwen2.5:3b (41) |
+| Reasoning Trap | reasoning | **phi3:mini** | 39 | qwen2.5:3b (38) |
+| Red Team Login | security | **qwen2.5:3b** | 38 | gemma2:2b (38) |
+| Wild Startup Pitch | creative | **gemma2:2b** | 38 | phi3:mini (38) |
+
+### Win totals
+
+| Model | Wins | Best at (this run) |
+|-------|------|---------------------|
+| qwen2.5:3b | 2 | product, security |
+| phi3:mini | 2 | coding, reasoning |
+| gemma2:2b | 1 | creative |
+
+**3 different winners across 5 queries** — no single model dominates every task type.
+
+Full scored breakdown: [`docs/benchmark_results.json`](docs/benchmark_results.json)
+
+```mermaid
+flowchart LR
+    subgraph wins [Winners by Challenge Type]
+        P[product] --> Q[qwen2.5:3b]
+        C[coding] --> PH[phi3:mini]
+        R[reasoning] --> PH2[phi3:mini]
+        S[security] --> Q2[qwen2.5:3b]
+        CR[creative] --> G[gemma2:2b]
+    end
+```
+
+> Results are from one local benchmark run with a small judge model. Re-run `python scripts/run_model_benchmark.py` on your hardware for your own leaderboard.
 
 ---
 
@@ -741,9 +816,12 @@ cortex-arena/
 ├── tests/
 │   └── test_agentic_engines.py   Unit tests for math and storage
 ├── scripts/
-│   └── verify_live_behavior.py   Live query/model differentiation checks
+│   ├── verify_live_behavior.py   Live query/model output checks
+│   └── run_model_benchmark.py    Multi-challenge winner benchmark
 ├── docs/
-│   └── verification_results.json Latest live verification output
+│   ├── GETTING_STARTED.md        Step-by-step local setup guide
+│   ├── verification_results.json Latest output differentiation proof
+│   └── benchmark_results.json    Latest multi-query winner scores
 ├── .env.example                  Optional BYOK provider variables
 ├── pyproject.toml
 └── README.md
