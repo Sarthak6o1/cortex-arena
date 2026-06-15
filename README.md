@@ -1,12 +1,16 @@
-# Cortex Arena X
+# Cortex Arena
+
+[![GitHub](https://img.shields.io/badge/GitHub-cortex--arena-181717?logo=github)](https://github.com/Sarthak6o1/cortex-arena)
 
 **A local-first agentic AI evaluation platform for company model testing, private prompt benchmarking, and HIPAA-aligned on-premise workflows.**
 
-Cortex Arena X helps teams evaluate large language models on their own hardware without sending prompts, scores, or replay history to a hosted AI service by default. Local Ollama models compete in structured episodes, receive critique, revise their answers, get scored by judge agents, and build long-term selection memory through goal-based reasoning, utility-based decisions, Q-learning, and UCB exploration.
+Repository: [github.com/Sarthak6o1/cortex-arena](https://github.com/Sarthak6o1/cortex-arena)
+
+Cortex Arena helps teams evaluate large language models on their own hardware without sending prompts, scores, or replay history to a hosted AI service by default. Local Ollama models compete in structured episodes, receive critique, revise their answers, get scored by judge agents, and build long-term selection memory through goal-based reasoning, utility-based decisions, Q-learning, and UCB exploration.
 
 Designed for **company-local evaluation**, **internal AI labs**, and **privacy-sensitive environments** where data residency, auditability, and controlled model selection matter.
 
-> **Important:** Cortex Arena X is designed with a **HIPAA-aligned local posture**. It is **not** a certified HIPAA product, medical device, or compliance guarantee by itself. Your organization remains responsible for policies, access control, encryption, retention, BAAs, and approved deployment practices.
+> **Important:** Cortex Arena is designed with a **HIPAA-aligned local posture**. It is **not** a certified HIPAA product, medical device, or compliance guarantee by itself. Your organization remains responsible for policies, access control, encryption, retention, BAAs, and approved deployment practices.
 
 ---
 
@@ -23,6 +27,9 @@ Designed for **company-local evaluation**, **internal AI labs**, and **privacy-s
 - [Tech Stack](#tech-stack)
 - [Quickstart](#quickstart)
 - [Verify Everything Works](#verify-everything-works)
+- [Live Verification Results](#live-verification-results)
+- [Deployment Topology](#deployment-topology)
+- [Query Differentiation Flow](#query-differentiation-flow)
 - [API Endpoints](#api-endpoints)
 - [Mathematical Core](#mathematical-core)
 - [Project Structure](#project-structure)
@@ -34,7 +41,7 @@ Designed for **company-local evaluation**, **internal AI labs**, and **privacy-s
 
 ## Major Use Case
 
-Cortex Arena X is built for **company-local LLM evaluation** in environments where teams need evidence-backed model selection without exposing internal prompts to public cloud APIs.
+Cortex Arena is built for **company-local LLM evaluation** in environments where teams need evidence-backed model selection without exposing internal prompts to public cloud APIs.
 
 Use it when you want to:
 
@@ -51,13 +58,13 @@ Use it when you want to:
 
 ## Company Evaluation and HIPAA-Aligned Design
 
-Cortex Arena X is intended for organizations that need **local evaluation** of AI models in privacy-sensitive contexts, including healthcare-adjacent, HR, finance, legal, and internal operations workflows.
+Cortex Arena is intended for organizations that need **local evaluation** of AI models in privacy-sensitive contexts, including healthcare-adjacent, HR, finance, legal, and internal operations workflows.
 
 ### What "HIPAA-aligned local design" means here
 
 This project supports a **local-first privacy posture** that aligns with common HIPAA technical safeguard goals, such as:
 
-| Safeguard goal | How Cortex Arena X supports it |
+| Safeguard goal | How Cortex Arena supports it |
 |----------------|--------------------------------|
 | **Minimum necessary exposure** | Default Ollama mode keeps prompts and outputs on the local machine |
 | **Data residency** | Episode replays, scores, Q-values, and leaderboards stay in local SQLite |
@@ -72,32 +79,31 @@ This project supports a **local-first privacy posture** that aligns with common 
 ```mermaid
 flowchart LR
     subgraph company [Company Controlled Environment]
+        direction TB
         User[Authorized Evaluator]
         UI[Local Streamlit UI]
         API[Local FastAPI Backend]
         Arena[Agentic Evaluation Engine]
         DB[(Local SQLite)]
         Ollama[Local Ollama Models]
+        User --> UI --> API --> Arena
+        Arena --> Ollama
+        Arena --> DB
     end
 
     subgraph optional [Optional External Zone - Company Decision Only]
         Cloud[BYOK Cloud Provider]
     end
 
-    User --> UI
-    UI --> API
-    API --> Arena
-    Arena --> Ollama
-    Arena --> DB
     Arena -. optional configured path .-> Cloud
 
-    note1[Default path stays inside company boundary]
-    note2[No cloud required for core evaluation]
+    classDef boundary fill:#e8f5e9,stroke:#2e7d32
+    class company boundary
 ```
 
 ### Recommended company deployment model
 
-For privacy-sensitive evaluation, deploy Cortex Arena X as an **internal local lab**:
+For privacy-sensitive evaluation, deploy Cortex Arena as an **internal local lab**:
 
 1. Install on a company-managed laptop, workstation, or on-premise VM
 2. Use **Ollama-only mode** for evaluation of sensitive prompts
@@ -117,7 +123,7 @@ For privacy-sensitive evaluation, deploy Cortex Arena X as an **internal local l
 
 ### What this platform does not replace
 
-Cortex Arena X does **not** by itself provide:
+Cortex Arena does **not** by itself provide:
 
 - HIPAA certification
 - a Business Associate Agreement (BAA)
@@ -130,7 +136,7 @@ Those remain organizational responsibilities. This project gives you a **local e
 
 ### Suggested GitHub positioning
 
-**Repo name:** `cortex-arena-x`
+**Repo name:** `cortex-arena`
 
 **Short description:**
 
@@ -138,15 +144,15 @@ Those remain organizational responsibilities. This project gives you a **local e
 
 **Detailed description:**
 
-> Cortex Arena X is an on-premise agentic AI lab for organizations that need to compare, critique, score, and learn from local LLMs without sending evaluation data to hosted services by default. It supports company-local model selection, explainable agent decisions, SQLite replay history, and optional bring-your-own-key cloud providers for teams operating under privacy-sensitive and HIPAA-aligned workflows.
+> Cortex Arena is an on-premise agentic AI lab for organizations that need to compare, critique, score, and learn from local LLMs without sending evaluation data to hosted services by default. It supports company-local model selection, explainable agent decisions, SQLite replay history, and optional bring-your-own-key cloud providers for teams operating under privacy-sensitive and HIPAA-aligned workflows.
 
 ---
 
 ## Why This Project Exists
 
-Most local LLM demos are simple chatbots. Cortex Arena X goes further:
+Most local LLM demos are simple chatbots. Cortex Arena goes further:
 
-| Typical chatbot demo | Cortex Arena X |
+| Typical chatbot demo | Cortex Arena |
 |----------------------|----------------|
 | One prompt, one answer | Multi-round agent workflow |
 | No comparison | Side-by-side model competition |
@@ -220,6 +226,66 @@ flowchart TB
     SQLite --> Episodes
     SQLite --> Scores
     SQLite --> QTable
+```
+
+---
+
+## Deployment Topology
+
+How Cortex Arena typically runs on a company-managed machine:
+
+```mermaid
+flowchart TB
+    subgraph host [Company Workstation or On-Prem VM]
+        subgraph processes [Local Processes]
+            ST[Streamlit :8501]
+            UV[FastAPI Uvicorn :8000]
+            OL[Ollama daemon :11434]
+        end
+        subgraph data [Local Data]
+            SQLITE[(cortex_arena.db)]
+            ENV[.env secrets - backend only]
+        end
+        ST --> UV
+        UV --> OL
+        UV --> SQLITE
+        UV --> ENV
+    end
+
+    Evaluator[Authorized Evaluator Browser] --> ST
+    CLI[python -m backend.app.cli] --> OL
+```
+
+Default mode keeps prompts, model outputs, scores, and replay history on the host. Optional cloud providers are off unless `.env` is configured.
+
+---
+
+## Query Differentiation Flow
+
+Each challenge and model pair produces a distinct contestant answer. The verification script hashes outputs to prove they are not identical:
+
+```mermaid
+flowchart LR
+    subgraph sameModel [Same Model - Different Queries]
+        M1[qwen2.5:3b]
+        C1[coding challenge]
+        C2[security challenge]
+        C1 --> M1
+        C2 --> M1
+        M1 --> H1["digest 76922071869e8e8c"]
+        M1 --> H2["digest 7621c107d7da789f"]
+    end
+
+    subgraph sameQuery [Same Query - Different Models]
+        Q[coding challenge]
+        A1[qwen2.5:3b]
+        A2[gemma2:2b]
+        Q --> A1 --> D1["digest c0e576b8e1dcef26"]
+        Q --> A2 --> D2["digest ae12a0e2207f90ec"]
+    end
+
+    H1 -. distinct .- H2
+    D1 -. distinct .- D2
 ```
 
 ---
@@ -426,8 +492,8 @@ Download from [ollama.com](https://ollama.com).
 ### 2. Install the project
 
 ```bash
-git clone <your-repo-url>
-cd proj_idea
+git clone https://github.com/Sarthak6o1/cortex-arena.git
+cd cortex-arena
 
 python -m venv .venv
 .venv\Scripts\activate        # Windows
@@ -532,6 +598,62 @@ Current test coverage:
 
 If all of that appears, the app is working end-to-end.
 
+### Level 4: Live query and model differentiation
+
+Run the live verification script (requires Ollama with `qwen2.5:3b` and `gemma2:2b`):
+
+```bash
+python scripts/verify_live_behavior.py
+```
+
+This script checks two properties:
+
+1. **Different queries, same model** — `qwen2.5:3b` on a coding vs security challenge must produce different SHA-256 digests.
+2. **Same query, different models** — the same coding challenge with `qwen2.5:3b` vs `gemma2:2b` must produce different digests.
+
+Results are written to [`docs/verification_results.json`](docs/verification_results.json).
+
+---
+
+## Live Verification Results
+
+Last verified: **2026-06-15T12:44:00Z** (local Ollama v0.30.6)
+
+### Unit tests (`pytest -v`)
+
+```text
+tests/test_agentic_engines.py::test_q_learning_update_uses_bellman_rule PASSED
+tests/test_agentic_engines.py::test_utility_engine_prefers_high_q_model PASSED
+tests/test_agentic_engines.py::test_goal_engine_marks_strong_episode_as_met PASSED
+tests/test_agentic_engines.py::test_episode_store_persists_replay_leaderboard_and_q_table PASSED
+
+4 passed in 0.64s
+```
+
+### Live behavior proof
+
+| Test | Model(s) | Challenge types | Digest A | Digest B | Distinct? |
+|------|----------|-----------------|----------|----------|-----------|
+| Different queries, same model | `qwen2.5:3b` | coding vs security | `76922071869e8e8c` | `7621c107d7da789f` | **Yes** |
+| Same query, different models | `qwen2.5:3b` vs `gemma2:2b` | coding (same prompt) | `c0e576b8e1dcef26` | `ae12a0e2207f90ec` | **Yes** |
+
+**Overall: PASSED** — outputs are genuinely different per query and per model.
+
+Sample answer previews from the live run:
+
+| Case | Preview |
+|------|---------|
+| `qwen2.5:3b` + coding | "The likely bug in this scenario is that if the function does not explicitly return something (such as an empty list or `None`), then by default it returns `None`..." |
+| `qwen2.5:3b` + security | "### Review of Simple Email/Password Login Design #### Identified Security Risks: 1. **Weak Password Hashing**..." |
+| `gemma2:2b` + coding | "```python def find_items(data): \"\"\"Finds items in data; returns None if no items are found.\"\"\" if not data: return None..." |
+
+Re-run verification anytime after model or prompt changes:
+
+```bash
+pytest -v
+python scripts/verify_live_behavior.py
+```
+
 ---
 
 ## API Endpoints
@@ -595,7 +717,7 @@ Reward signals include:
 ## Project Structure
 
 ```text
-proj_idea/
+cortex-arena/
 ├── backend/
 │   └── app/
 │       ├── agentic/              Goal-based and utility-based engines
@@ -618,6 +740,10 @@ proj_idea/
 │       └── mixed_challenges.json Sample challenge pack
 ├── tests/
 │   └── test_agentic_engines.py   Unit tests for math and storage
+├── scripts/
+│   └── verify_live_behavior.py   Live query/model differentiation checks
+├── docs/
+│   └── verification_results.json Latest live verification output
 ├── .env.example                  Optional BYOK provider variables
 ├── pyproject.toml
 └── README.md
@@ -627,7 +753,7 @@ proj_idea/
 
 ## Security Model
 
-Cortex Arena X is designed for **company-local evaluation** and a **HIPAA-aligned privacy posture**, not for exposing shared maintainer API credentials or sending evaluation data to cloud services by default.
+Cortex Arena is designed for **company-local evaluation** and a **HIPAA-aligned privacy posture**, not for exposing shared maintainer API credentials or sending evaluation data to cloud services by default.
 
 ### Default secure posture
 
@@ -674,7 +800,7 @@ Never commit real keys.
 
 ### Compliance note
 
-Cortex Arena X helps teams adopt a **local, auditable, privacy-conscious evaluation workflow**. It does **not** automatically make your organization HIPAA compliant. Compliance depends on how you deploy, govern, and operate the system.
+Cortex Arena helps teams adopt a **local, auditable, privacy-conscious evaluation workflow**. It does **not** automatically make your organization HIPAA compliant. Compliance depends on how you deploy, govern, and operate the system.
 
 ---
 
@@ -737,4 +863,4 @@ Example:
 
 ---
 
-**Cortex Arena X** — compare local models like a lab, not a chatbot. Built for company evaluation and HIPAA-aligned on-premise workflows.
+**Cortex Arena** — compare local models like a lab, not a chatbot. Built for company evaluation and HIPAA-aligned on-premise workflows.
