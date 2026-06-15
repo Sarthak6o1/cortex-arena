@@ -1,1 +1,1 @@
-"""Backend package for Cortex Arena X."""
+"""Backend package for Cortex Arena."""

@@ -1,1 +1,1 @@
-"""Cortex Arena X backend namespace."""
+"""Cortex Arena backend namespace."""

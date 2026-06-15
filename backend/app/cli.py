@@ -10,7 +10,7 @@ def main() -> None:
 
 
 async def async_main() -> None:
-    parser = argparse.ArgumentParser(description="Cortex Arena X setup helper")
+    parser = argparse.ArgumentParser(description="Cortex Arena setup helper")
     parser.add_argument(
         "--pull-recommended",
         action="store_true",
