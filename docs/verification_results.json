@@ -1,8 +1,9 @@
 {
   "project": "Cortex Arena",
-  "verified_at": "2026-06-15T12:44:00.906627+00:00",
+  "verified_at": "2026-06-15T12:56:15.946520+00:00",
   "ollama_running": true,
   "installed_models": [
+    "nomic-embed-text:latest",
     "gemma2:2b",
     "llama3.2:3b",
     "phi3:mini",
@@ -17,17 +18,17 @@
           "model": "qwen2.5:3b",
           "challenge_type": "coding",
           "challenge": "A Python function sometimes returns None instead of an empty list when no records are found. Explain the likely bug, propose a fix, and include a minimal test.",
-          "digest": "76922071869e8e8c",
-          "preview": "The likely bug in this scenario is that if the function does not explicitly return something (such as an empty list or `None`), then by default it returns `None`. This can happe...",
-          "length": 2034
+          "digest": "14295c103b0ca89d",
+          "preview": "The likely bug in the provided code is that it might not correctly handle cases where no records are found, resulting in `None` being returned instead of an empty list. This can...",
+          "length": 1905
         },
         {
           "model": "qwen2.5:3b",
           "challenge_type": "security",
           "challenge": "Review a simple email/password login design for a SaaS app. Find security risks and propose practical mitigations for a small team.",
-          "digest": "7621c107d7da789f",
-          "preview": "### Review of Simple Email/Password Login Design #### Identified Security Risks: 1. **Weak Password Hashing**: The passwords are hashed using a simple hashing algorithm (e.g., M...",
-          "length": 2423
+          "digest": "1badab9ee5142a5c",
+          "preview": "### Email/Password Login Design Review and Mitigation Suggestions #### Current Design Analysis: **1. Password Storage:** - **Risk:** The current implementation likely uses simpl...",
+          "length": 3147
         }
       ],
       "distinct_outputs": true,
@@ -41,17 +42,17 @@
           "model": "qwen2.5:3b",
           "challenge_type": "coding",
           "challenge": "A Python function sometimes returns None instead of an empty list when no records are found. Explain the likely bug, propose a fix, and include a minimal test.",
-          "digest": "c0e576b8e1dcef26",
-          "preview": "The likely bug in this scenario is that the function may be returning `None` for cases where there should ideally be an empty list (`[]`). This can happen if the function lacks ...",
-          "length": 1789
+          "digest": "0d3b0d29024c0da5",
+          "preview": "The likely bug in this scenario is that if the function executes any operations before checking for `None`, it might return some value (like None) instead of an empty list when ...",
+          "length": 2107
         },
         {
           "model": "gemma2:2b",
           "challenge_type": "coding",
           "challenge": "A Python function sometimes returns None instead of an empty list when no records are found. Explain the likely bug, propose a fix, and include a minimal test.",
-          "digest": "ae12a0e2207f90ec",
-          "preview": "```python def find_items(data): \"\"\"Finds items in data; returns None if no items are found.\"\"\" if not data: return None # Return None for empty data # Logic to find items and re...",
-          "length": 1847
+          "digest": "383126a857993c77",
+          "preview": "```python def get_data(): \"\"\"Fetches data from a source.\"\"\" try: # Fetch data from database/API data = [1, 2, 3, 4, 5] except Exception as e: print(f\"Error fetching data: {e}\") ...",
+          "length": 1143
         }
       ],
       "distinct_outputs": true,

@@ -1,0 +1,218 @@
+{
+  "project": "Cortex Arena",
+  "benchmark_at": "2026-06-15T13:16:07.126853+00:00",
+  "judge_model": "llama3.2:3b",
+  "contestants": [
+    "qwen2.5:3b",
+    "gemma2:2b",
+    "phi3:mini"
+  ],
+  "challenges_run": 5,
+  "episodes": [
+    {
+      "title": "Secure Student Notes",
+      "challenge_type": "product",
+      "winner": "qwen2.5:3b",
+      "winner_label": "ollama:qwen2.5:3b",
+      "scores": [
+        {
+          "model": "qwen2.5:3b",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 7,
+          "resilience": 8,
+          "usefulness": 9,
+          "rationale": "The contestant demonstrates a strong understanding of the requirements and presents a comprehensive solution. The 'Secure Note Sync' feature adds significant value by leveraging blockchain technology, providing users with an innovative way to enhance data security."
+        },
+        {
+          "model": "gemma2:2b",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 9,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "The revised submission provides a clear and concise overview of the app's core functionalities, architecture, security features, and unique twist. However, some areas still require improvement to make it more comprehensive and robust."
+        },
+        {
+          "model": "phi3:mini",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 9,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "The revised design addresses some of the concerns from the original critique, such as enhanced accessibility and practical features. However, it still lacks a clear roadmap for future development or updates, and some features may be overwhelming for users."
+        }
+      ],
+      "episode_id": "367421fb-905b-4bb1-9803-dc8b47401943"
+    },
+    {
+      "title": "Bug Fix Debate",
+      "challenge_type": "coding",
+      "winner": "phi3:mini",
+      "winner_label": "ollama:phi3:mini",
+      "scores": [
+        {
+          "model": "phi3:mini",
+          "total": 44,
+          "correctness": 9,
+          "creativity": 8,
+          "clarity": 9,
+          "resilience": 9,
+          "usefulness": 9,
+          "rationale": "The contestant has demonstrated a strong understanding of the issue and provided a well-structured response with additional improvements. The revised answer includes comprehensive edge cases, error logging, and mock objects, making it more robust and maintainable."
+        },
+        {
+          "model": "qwen2.5:3b",
+          "total": 41,
+          "correctness": 9,
+          "creativity": 6,
+          "clarity": 8,
+          "resilience": 9,
+          "usefulness": 9,
+          "rationale": "The revised solution addresses all critique points, including missed edge cases and practicality. It provides a clear and concise implementation with additional test cases to cover more scenarios."
+        },
+        {
+          "model": "gemma2:2b",
+          "total": 34,
+          "correctness": 9,
+          "creativity": 2,
+          "clarity": 8,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "Explicitly checks for None before processing, addressing potential issues. Descriptive variable names improve code readability."
+        }
+      ],
+      "episode_id": "17bf2f8c-b4b4-4e07-ac71-bb0004227664"
+    },
+    {
+      "title": "Reasoning Trap",
+      "challenge_type": "reasoning",
+      "winner": "phi3:mini",
+      "winner_label": "ollama:phi3:mini",
+      "scores": [
+        {
+          "model": "phi3:mini",
+          "total": 39,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 7,
+          "resilience": 9,
+          "usefulness": 9,
+          "rationale": "The revised answer provides a more comprehensive and practical approach to diagnosing the real cause of the decrease in shipped features, considering technical debt and external factors. It also offers alternative solutions and enhancements to improve the team's performance."
+        },
+        {
+          "model": "qwen2.5:3b",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 9,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "The revised answer provides a more comprehensive plan to diagnose the real cause of reduced productivity, including additional insights and practical steps. However, it could benefit from further refinement in terms of creativity and exploration of innovative solutions."
+        },
+        {
+          "model": "gemma2:2b",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 9,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "The revised answer provides a more comprehensive approach to addressing the challenge, incorporating additional context and exploring potential edge cases. However, it still lacks a clear explanation of how these plans will be implemented and measured."
+        }
+      ],
+      "episode_id": "3b65a23e-9d8a-4b57-af14-78f0442995bc"
+    },
+    {
+      "title": "Red Team Login",
+      "challenge_type": "security",
+      "winner": "qwen2.5:3b",
+      "winner_label": "ollama:qwen2.5:3b",
+      "scores": [
+        {
+          "model": "qwen2.5:3b",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 9,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "The revised answer provides a more detailed explanation of each mitigation strategy, addressing potential edge cases and security considerations. However, some minor formatting issues remain."
+        },
+        {
+          "model": "gemma2:2b",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 9,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "The revised answer provides a more comprehensive review of potential security risks and practical mitigations. It addresses edge cases, balances individual user responsibility with organizational measures, and emphasizes post-implementation security testing."
+        },
+        {
+          "model": "phi3:mini",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 6,
+          "clarity": 9,
+          "resilience": 7,
+          "usefulness": 8,
+          "rationale": "The revised answer provides a comprehensive and structured approach to addressing various security risks in an email/password login design. It includes a detailed risk analysis, practical mitigation strategies, and implementation guidance. The answer is well-organized and easy to follow, making it clear and concise. However, some of the language used may be considered overly technical or complex for non-experts."
+        }
+      ],
+      "episode_id": "7111f36b-977f-4abc-afee-7f667cda1de4"
+    },
+    {
+      "title": "Wild Startup Pitch",
+      "challenge_type": "creative",
+      "winner": "gemma2:2b",
+      "winner_label": "ollama:gemma2:2b",
+      "scores": [
+        {
+          "model": "gemma2:2b",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 7,
+          "clarity": 9,
+          "resilience": 6,
+          "usefulness": 8,
+          "rationale": "The revised answer addresses several concerns from the critique, including specificity in AI tutoring capabilities, accessibility, and data ownership. However, it still lacks a clear monetization strategy and could benefit from more detailed technical requirements."
+        },
+        {
+          "model": "phi3:mini",
+          "total": 38,
+          "correctness": 8,
+          "creativity": 7,
+          "clarity": 9,
+          "resilience": 6,
+          "usefulness": 8,
+          "rationale": "Addressed concerns, added gamification elements and clarity improvements, but still needs to balance features with practicality."
+        },
+        {
+          "model": "qwen2.5:3b",
+          "total": 35,
+          "correctness": 7,
+          "creativity": 6,
+          "clarity": 8,
+          "resilience": 5,
+          "usefulness": 9,
+          "rationale": "The revised submission addresses most of the critique's concerns, providing more details about the app's features and business model. However, some areas still require improvement, such as handling edge cases and data quality."
+        }
+      ],
+      "episode_id": "fd6391a8-16b1-4f23-a2a0-ea9103a52eb9"
+    }
+  ],
+  "summary": {
+    "wins_by_model": {
+      "qwen2.5:3b": 2,
+      "phi3:mini": 2,
+      "gemma2:2b": 1
+    },
+    "unique_winners": 3,
+    "winners_vary_by_query": true,
+    "passed": true
+  }
+}
